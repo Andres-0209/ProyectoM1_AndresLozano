@@ -1,0 +1,15 @@
+body {
+  background-color: rgb(11, 11, 32);
+}
+
+main {
+  display: flex;
+  gap: 40px;
+  max-width: 300px;
+}
+
+aside {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
