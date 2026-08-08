@@ -1,11 +1,16 @@
-body {
-  background-color: rgb(11, 11, 32);
+/*body {
+  background-color: #0b1424;
+}
+
+header {
+  color: white;
 }
 
 main {
   display: flex;
   gap: 40px;
-  max-width: 300px;
+  max-width: 100rem;
+  color: white;
 }
 
 aside {
@@ -13,3 +18,439 @@ aside {
   display: flex;
   flex-direction: column;
 }
+
+.panel-derecho {
+  display: flex;
+  flex-direction: column;
+  gap: 50px; 
+  width: 100%; 
+}
+
+button {
+  padding: 10px 15px;
+  border: 2px solid rgb(10, 198, 255);
+  background-color: #0b1424;
+  color: white;
+  border-radius: 10px;
+}
+
+.Historial-de-paletas {
+  width: 300px;
+  display: flex;
+}
+
+.grid-colores {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: -60px;
+}
+
+.Tarjeta-color {
+  width: 50px;
+  border: 2px solid rgb(10, 198, 255);
+  border-radius: 100%;
+}
+
+.Tarjeta-color:nth-child(even){
+  transform: translate(0px); 
+}
+
+//
+
+/* =========================================================
+   COLOR PALETTE GENERATOR — CSS ajustado al diseño de referencia
+   Se conserva el HTML y las clases/IDs existentes.
+   ========================================================= */
+
+:root {
+  --bg: #0b1424;
+  --card-bg: #101d33;
+  --cyan: #22d3ee;
+  --cyan-strong: rgb(10, 198, 255);
+  --text-dim: rgba(255, 255, 255, 0.55);
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --circle-size: clamp(64px, 8vw, 92px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0D1C2E;  
+  margin: 0;
+  padding: 40px 20px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- HEADER ---------- */
+header {
+  color: white;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.35);
+  margin: 0;
+  /* Alinea visualmente el título sobre el panel derecho, como en la referencia */
+  padding-left: clamp(0px, 15vw, 340px);
+}
+
+/* ---------- LAYOUT PRINCIPAL ---------- */
+main {
+  display: flex;
+  gap: 40px;
+  max-width: 100rem;
+  margin: 0 auto;
+  color: white;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+aside {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+aside section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Título "FORMATO DE COLOR" */
+aside section > h2 {
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ---------- CAJA: SELECT DE FORMATO ---------- */
+/* Primer div del section: contiene el <select> */
+aside section > div:nth-of-type(1) {
+  position: relative;
+  border: 2px solid var(--cyan-strong);
+  border-radius: var(--radius-lg);
+  background-color: var(--card-bg);
+  padding: 16px 50px 16px 18px;
+}
+
+aside section > div:nth-of-type(1) select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+aside section > div:nth-of-type(1) select option {
+  background-color: var(--card-bg);
+  color: white;
+}
+
+/* Círculo decorativo que "sobresale" del borde (sin icono de flecha) */
+aside section > div:nth-of-type(1)::after {
+  content: "";
+  position: absolute;
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan-strong);
+  background-color: var(--bg);
+  pointer-events: none;
+}
+
+/* ---------- GRUPO DE BOTONES 6 / 8 / 9 ---------- */
+/* Segundo div del section: contiene los 3 botones de cantidad */
+aside section > div:nth-of-type(2) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid var(--cyan-strong);
+  border-radius: var(--radius-pill);
+  padding: 8px;
+  width: fit-content;
+}
+
+aside section > div:nth-of-type(2) button {
+  border: 2px solid rgba(34, 211, 238, 0.35);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Estado hover: feedback claro al pasar el cursor */
+aside section > div:nth-of-type(2) button:hover {
+  border-color: var(--cyan-strong);
+  background-color: rgba(34, 211, 238, 0.08);
+}
+
+/* Estado active: feedback inmediato al hacer clic */
+aside section > div:nth-of-type(2) button:active {
+  transform: scale(0.94);
+}
+
+/* Estado seleccionado: se mantiene igual visualmente (el que tenía "9" por defecto),
+   pero ahora responde al botón realmente pulsado en lugar de al último hijo fijo.
+   El JS debe alternar la clase "active" (o "selected") entre los 3 botones al hacer clic. */
+aside section > div:nth-of-type(2) button.active,
+aside section > div:nth-of-type(2) button.selected,
+aside section > div:nth-of-type(2) button:last-child {
+  border-color: var(--cyan-strong);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.25);
+  background-color: rgba(34, 211, 238, 0.08);
+}
+
+/* ---------- BOTONES DE ACCIÓN (GENERAR / GUARDAR) ---------- */
+/* Tercer div del section: acciones principales */
+aside section > div:nth-of-type(3) {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 10px;
+}
+
+aside section > div:nth-of-type(3) button {
+  padding: 18px 20px;
+  border: 2px solid var(--cyan-strong);
+  border-radius: 16px;
+  background-color: var(--card-bg);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+aside section > div:nth-of-type(3) button:hover {
+  background-color: rgba(34, 211, 238, 0.1);
+}
+
+aside section > div:nth-of-type(3) button:active {
+  transform: scale(0.98);
+}
+
+/* Botón genérico (fallback, por si se agregan más) */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- PANEL DERECHO ---------- */
+.panel-derecho {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+/* ---------- GRID DE COLORES EN ZIGZAG ---------- */
+.grid-colores {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 50px 36px;
+  padding: 10px 0 50px;
+}
+
+.Tarjeta-color {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--circle-size);
+}
+
+/* Efecto zigzag: los elementos pares bajan, como en la referencia (1-3-5-7-9 arriba / 2-4-6-8 abajo) */
+.Tarjeta-color:nth-child(even) {
+  transform: translateY(calc(var(--circle-size) * 0.95));
+}
+
+.Tarjeta-color > div {
+  position: relative;
+  width: var(--circle-size);
+  height: var(--circle-size);
+  border-radius: 50%;
+  border: 2px solid var(--cyan-strong);
+  background-color: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: white;
+  overflow: visible;
+  transition: transform 0.2s ease;
+}
+
+.Tarjeta-color > div:hover {
+  transform: scale(1.05);
+}
+
+/* Rombo decorativo en la esquina superior derecha de cada círculo */
+.Tarjeta-color > div::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--bg);
+  border: 2px solid var(--cyan-strong);
+  transform: rotate(45deg);
+  border-radius: 3px;
+}
+
+.Tarjeta-color p {
+  margin: 10px 0 0;
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ---------- HISTORIAL / PALETAS GUARDADAS ---------- */
+.Historial-de-paletas {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid var(--cyan-strong);
+  border-radius: var(--radius-lg);
+  background-color: var(--card-bg);
+  padding: 30px;
+  gap: 20px;
+  min-height: 220px;
+}
+
+.Historial-de-paletas h3 {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+
+/* Guía opcional para cuando se agreguen las paletas guardadas dinámicamente vía JS.
+   Sugerencia de estructura (no requiere cambios en el HTML actual):
+   <div class="paleta-guardada">
+     <span class="color-guardado" style="background:#00eaff"></span>
+     ...
+   </div>
+*/
+.paleta-guardada {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.color-guardado {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* Tablet */
+@media (max-width: 900px) {
+  main {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  aside {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  aside section {
+    width: 100%;
+  }
+
+  header h1 {
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .grid-colores {
+    justify-content: center;
+    gap: 40px 24px;
+  }
+}
+
+/* Móvil: se conserva el zigzag pero más compacto */
+@media (max-width: 560px) {
+  :root {
+    --circle-size: clamp(56px, 18vw, 72px);
+  }
+
+  body {
+    padding: 24px 14px;
+  }
+
+  aside section > div:nth-of-type(2) {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .grid-colores {
+    gap: 34px 16px;
+  }
+
+  .Tarjeta-color:nth-child(even) {
+    transform: translateY(calc(var(--circle-size) * 0.6));
+  }
+}
+
+/* Móvil muy pequeño: se elimina el zigzag para priorizar legibilidad */
+@media (max-width: 380px) {
+  .Tarjeta-color:nth-child(even) {
+    transform: translateY(0);
+  }
+
+  .grid-colores {
+    justify-content: space-between;
+  }
+}
+
+
+
+
