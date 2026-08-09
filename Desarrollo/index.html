@@ -15,78 +15,35 @@
         <section>
           <h2>FORMATO DE COLOR</h2>
           <div>
-            <select>
-              <option value="Hex">HEX</option>
-              <option value="Rgba">RGBA</option>
+            <select id="formato-color">
+              <option value="hsl">HSL</option>
+              <option value="hex">HEX</option>
+              <option value="rgba">RGBA</option>
             </select>
           </div>
-          <div>
-            <button>6</button>
-            <button>8</button>
-            <button>9</button>
+ 
+          <div id="cantidad-colores">
+            <button data-count="6">6</button>
+            <button data-count="8">8</button>
+            <button data-count="9">9</button>
           </div>
-
+ 
           <div>
-            <button>GENERAR PALETA</button>
-            <button>GUARDAR PALETA</button>
+            <button id="btn-generar">GENERAR PALETA</button>
+            <button id="btn-guardar">GUARDAR PALETA</button>
           </div>
         </section>
       </aside>
-
+ 
       <div class="panel-derecho">
-        <section class="grid-colores">
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
-
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
-
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
-
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
-
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
-
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
-
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
-
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
-
-          <div class="Tarjeta-color">
-            <div></div>
-            <p>HEX/RGBA</p>
-          </div>
+        <section class="grid-colores" id="grid-colores">
+          <!-- JS genera aquí las tarjetas dinámicamente -->
         </section>
-
-        <section class="Historial-de-paletas">
+ 
+        <section class="Historial-de-paletas" id="paletas-guardadas">
           <h3>PALETAS GUARDADAS</h3>
         </section>
-
       </div>
-      
     </main>
     <script src="./script.js"></script>
   </body>

@@ -101,7 +101,6 @@ header h1 {
   color: var(--cyan);
   text-shadow: 0 0 18px rgba(34, 211, 238, 0.35);
   margin: 0;
-  /* Alinea visualmente el título sobre el panel derecho, como en la referencia */
   padding-left: clamp(0px, 15vw, 340px);
 }
 
@@ -139,6 +138,8 @@ aside section > h2 {
 
 /* ---------- CAJA: SELECT DE FORMATO ---------- */
 /* Primer div del section: contiene el <select> */
+/* CORREGIDO: el selector original tenía un typo ("nth-of-typ> dive(1)")
+   que lo hacía inválido y por eso la caja nunca mostraba su borde/fondo */
 aside section > div:nth-of-type(1) {
   position: relative;
   border: 2px solid var(--cyan-strong);
@@ -166,23 +167,8 @@ aside section > div:nth-of-type(1) select option {
   color: white;
 }
 
-/* Círculo decorativo que "sobresale" del borde (sin icono de flecha) */
-aside section > div:nth-of-type(1)::after {
-  content: "";
-  position: absolute;
-  right: -18px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--cyan-strong);
-  background-color: var(--bg);
-  pointer-events: none;
-}
 
 /* ---------- GRUPO DE BOTONES 6 / 8 / 9 ---------- */
-/* Segundo div del section: contiene los 3 botones de cantidad */
 aside section > div:nth-of-type(2) {
   display: flex;
   align-items: center;
@@ -210,21 +196,16 @@ aside section > div:nth-of-type(2) button {
   transition: all 0.2s ease;
 }
 
-/* Estado hover: feedback claro al pasar el cursor */
 aside section > div:nth-of-type(2) button:hover {
   border-color: var(--cyan-strong);
   background-color: rgba(34, 211, 238, 0.08);
 }
 
-/* Estado active: feedback inmediato al hacer clic */
 aside section > div:nth-of-type(2) button:active {
   transform: scale(0.94);
 }
 
-/* Estado seleccionado: se mantiene igual visualmente (el que tenía "9" por defecto),
-   pero ahora responde al botón realmente pulsado en lugar de al último hijo fijo.
-   El JS debe alternar la clase "active" (o "selected") entre los 3 botones al hacer clic. */
-aside section > div:nth-of-type(2) button.active,
+/*aside section > div:nth-of-type(2) button.active,
 aside section > div:nth-of-type(2) button.selected,
 aside section > div:nth-of-type(2) button:last-child {
   border-color: var(--cyan-strong);
@@ -233,7 +214,6 @@ aside section > div:nth-of-type(2) button:last-child {
 }
 
 /* ---------- BOTONES DE ACCIÓN (GENERAR / GUARDAR) ---------- */
-/* Tercer div del section: acciones principales */
 aside section > div:nth-of-type(3) {
   display: flex;
   flex-direction: column;
@@ -263,7 +243,6 @@ aside section > div:nth-of-type(3) button:active {
   transform: scale(0.98);
 }
 
-/* Botón genérico (fallback, por si se agregan más) */
 button {
   font-family: inherit;
   cursor: pointer;
@@ -294,7 +273,6 @@ button {
   width: var(--circle-size);
 }
 
-/* Efecto zigzag: los elementos pares bajan, como en la referencia (1-3-5-7-9 arriba / 2-4-6-8 abajo) */
 .Tarjeta-color:nth-child(even) {
   transform: translateY(calc(var(--circle-size) * 0.95));
 }
@@ -320,7 +298,22 @@ button {
   transform: scale(1.05);
 }
 
-/* Rombo decorativo en la esquina superior derecha de cada círculo */
+/* Botón real e invisible sobre el rombo decorativo, para poder bloquear el color */
+.Tarjeta-color > div .rombo-lock {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Rombo decorativo: ahora transparente por defecto (contorno cian visible),
+   antes usaba var(--bg), casi idéntico al fondo de la tarjeta => se veía "invisible" */
 .Tarjeta-color > div::after {
   content: "";
   position: absolute;
@@ -328,10 +321,16 @@ button {
   right: -6px;
   width: 16px;
   height: 16px;
-  background-color: var(--bg);
+  background-color: transparent;
   border: 2px solid var(--cyan-strong);
   transform: rotate(45deg);
   border-radius: 3px;
+  transition: background-color 0.15s ease;
+}
+
+/* Estado bloqueado: el rombo se rellena de cian sólido, contraste claro vs. el contorno hueco */
+.Tarjeta-color > div.bloqueado::after {
+  background-color: var(--cyan-strong);
 }
 
 .Tarjeta-color p {
@@ -347,8 +346,10 @@ button {
 .Historial-de-paletas {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;      /* antes: column -> forzaba una sola columna */
+  flex-wrap: wrap;          /* permite pasar a la siguiente fila al llenar el ancho */
+  align-items: flex-start;
+  justify-content: center;
   border: 2px solid var(--cyan-strong);
   border-radius: var(--radius-lg);
   background-color: var(--card-bg);
@@ -362,15 +363,21 @@ button {
   font-size: 0.85rem;
   letter-spacing: 1.5px;
   font-weight: 700;
+  flex: 1 1 100%;   /* el título siempre ocupa toda la fila, las paletas empiezan debajo */
+  text-align: center;
 }
 
-/* Guía opcional para cuando se agreguen las paletas guardadas dinámicamente vía JS.
-   Sugerencia de estructura (no requiere cambios en el HTML actual):
-   <div class="paleta-guardada">
-     <span class="color-guardado" style="background:#00eaff"></span>
-     ...
-   </div>
-*/
+/* Tarjeta individual de cada paleta guardada (generada por script.js) */
+.paleta-guardada-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-radius: 12px;
+  flex: 0 0 auto;
+}
+
 .paleta-guardada {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -383,11 +390,26 @@ button {
   border-radius: 8px;
 }
 
+.btn-eliminar-paleta {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: var(--text-dim);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-eliminar-paleta:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
 /* =========================================================
    RESPONSIVE
    ========================================================= */
 
-/* Tablet */
 @media (max-width: 900px) {
   main {
     flex-direction: column;
@@ -416,7 +438,6 @@ button {
   }
 }
 
-/* Móvil: se conserva el zigzag pero más compacto */
 @media (max-width: 560px) {
   :root {
     --circle-size: clamp(56px, 18vw, 72px);
@@ -440,7 +461,6 @@ button {
   }
 }
 
-/* Móvil muy pequeño: se elimina el zigzag para priorizar legibilidad */
 @media (max-width: 380px) {
   .Tarjeta-color:nth-child(even) {
     transform: translateY(0);
@@ -450,7 +470,5 @@ button {
     justify-content: space-between;
   }
 }
-
-
 
 
