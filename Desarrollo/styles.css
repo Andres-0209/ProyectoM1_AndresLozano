@@ -1,66 +1,10 @@
-/*body {
-  background-color: #0b1424;
-}
-
-header {
-  color: white;
-}
-
-main {
-  display: flex;
-  gap: 40px;
-  max-width: 100rem;
-  color: white;
-}
-
-aside {
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-}
-
-.panel-derecho {
-  display: flex;
-  flex-direction: column;
-  gap: 50px; 
-  width: 100%; 
-}
-
-button {
-  padding: 10px 15px;
-  border: 2px solid rgb(10, 198, 255);
-  background-color: #0b1424;
-  color: white;
-  border-radius: 10px;
-}
-
-.Historial-de-paletas {
-  width: 300px;
-  display: flex;
-}
-
-.grid-colores {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: -60px;
-}
-
-.Tarjeta-color {
-  width: 50px;
-  border: 2px solid rgb(10, 198, 255);
-  border-radius: 100%;
-}
-
-.Tarjeta-color:nth-child(even){
-  transform: translate(0px); 
-}
-
-//
-
 /* =========================================================
    COLOR PALETTE GENERATOR — CSS ajustado al diseño de referencia
    Se conserva el HTML y las clases/IDs existentes.
+   ---------------------------------------------------------
+   Pulido visual (ronda 3): notificaciones, candado, legibilidad
+   y estados hover/focus. Solo se tocó este archivo: HTML y JS
+   quedan exactamente iguales.
    ========================================================= */
 
 :root {
@@ -205,19 +149,15 @@ aside section > div:nth-of-type(2) button:active {
   transform: scale(0.94);
 }
 
-/*aside section > div:nth-of-type(2) button.active,
+aside section > div:nth-of-type(2) button.active,
 aside section > div:nth-of-type(2) button.selected,
-aside section > div:nth-of-type(2) button:last-child {
-  border-color: var(--cyan-strong);
-  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.25);
-  background-color: rgba(34, 211, 238, 0.08);
-}
+
 
 /* ---------- BOTONES DE ACCIÓN (GENERAR / GUARDAR) ---------- */
 aside section > div:nth-of-type(3) {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 56px; /* antes 40px: deja hueco suficiente para el mensaje de "Paleta generada" sin tocar el botón de abajo */
   margin-top: 10px;
 }
 
@@ -235,8 +175,13 @@ aside section > div:nth-of-type(3) button {
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
+aside section > div:nth-of-type(3) button {
+  position: relative; /* ancla el mensaje de feedback (::after) a este botón */
+}
+
 aside section > div:nth-of-type(3) button:hover {
   background-color: rgba(34, 211, 238, 0.1);
+  box-shadow: 0 4px 14px rgba(34, 211, 238, 0.15);
 }
 
 aside section > div:nth-of-type(3) button:active {
@@ -246,6 +191,15 @@ aside section > div:nth-of-type(3) button:active {
 button {
   font-family: inherit;
   cursor: pointer;
+}
+
+/* Foco sutil y consistente para navegación por teclado */
+aside section > div:nth-of-type(1) select:focus-visible,
+aside section > div:nth-of-type(2) button:focus-visible,
+aside section > div:nth-of-type(3) button:focus-visible,
+.btn-eliminar-paleta:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
 }
 
 /* ---------- PANEL DERECHO ---------- */
@@ -291,53 +245,100 @@ button {
   font-weight: 700;
   color: white;
   overflow: visible;
-  transition: transform 0.2s ease;
+  cursor: pointer; /* deja claro que el círculo es interactivo (copia el color) */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+/* Feedback al pasar el cursor: leve escala + resplandor, sin efectos exagerados */
 .Tarjeta-color > div:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.15), 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Botón real e invisible sobre el rombo decorativo, para poder bloquear el color */
+/* Overlay discreto "Copiar HEX": solo visible durante el hover, deja clarísimo
+   que el color se puede copiar con un clic */
+.Tarjeta-color > div::after {
+  content: "Copiar HEX";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: rgba(11, 20, 36, 0.72);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+.Tarjeta-color > div:hover::after {
+  opacity: 1;
+}
+
+/* ---------- CANDADO DE BLOQUEO (reemplaza el rombo, mismo botón .rombo-lock que ya crea script.js) ---------- */
 .Tarjeta-color > div .rombo-lock {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 20px;
-  height: 20px;
+  top: -9px;
+  right: -9px;
+  width: 18px;
+  height: 13px;
   padding: 0;
-  border: none;
-  background: transparent;
+  border-radius: 3px;
+  border: 1.5px solid var(--cyan-strong);
+  background-color: var(--bg);
   cursor: pointer;
-  z-index: 2;
+  z-index: 3;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 }
 
-/* Rombo decorativo: ahora transparente por defecto (contorno cian visible),
-   antes usaba var(--bg), casi idéntico al fondo de la tarjeta => se veía "invisible" */
-.Tarjeta-color > div::after {
+.Tarjeta-color > div .rombo-lock:hover {
+  transform: scale(1.12);
+}
+
+/* Argolla del candado */
+.Tarjeta-color > div .rombo-lock::before {
   content: "";
   position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 16px;
-  height: 16px;
-  background-color: transparent;
-  border: 2px solid var(--cyan-strong);
-  transform: rotate(45deg);
-  border-radius: 3px;
-  transition: background-color 0.15s ease;
+  top: -8px;
+  left: 50%;
+  width: 10px;
+  height: 9px;
+  border: 1.5px solid var(--cyan-strong);
+  border-bottom: none;
+  border-radius: 50% 50% 0 0;
+  transform: translateX(-50%);
+  transition: transform 0.18s ease, border-color 0.18s ease;
 }
 
-/* Estado bloqueado: el rombo se rellena de cian sólido, contraste claro vs. el contorno hueco */
-.Tarjeta-color > div.bloqueado::after {
+/* Estado BLOQUEADO: candado cerrado y relleno de cian, argolla centrada */
+.Tarjeta-color > div.bloqueado .rombo-lock {
   background-color: var(--cyan-strong);
+  border-color: var(--cyan-strong);
+}
+
+.Tarjeta-color > div.bloqueado .rombo-lock::before {
+  border-color: var(--cyan-strong);
+  transform: translateX(-50%);
+}
+
+/* Estado DESBLOQUEADO: argolla desplazada y ligeramente rotada = candado "abierto" */
+.Tarjeta-color > div:not(.bloqueado) .rombo-lock::before {
+  transform: translateX(-78%) rotate(-16deg);
 }
 
 .Tarjeta-color p {
   margin: 10px 0 0;
-  font-size: 0.65rem;
+  font-size: 0.72rem; /* antes 0.65rem: un poco más legible */
+  font-weight: 600;   /* antes sin declarar (~400): 1-2 niveles más */
   letter-spacing: 0.5px;
-  color: var(--text-dim);
+  color: rgba(255, 255, 255, 0.72); /* antes var(--text-dim) al 55%: más contraste, sigue siendo secundario */
   text-transform: uppercase;
   text-align: center;
 }
@@ -399,11 +400,93 @@ button {
   font-size: 0.7rem;
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.1s ease;
 }
 
 .btn-eliminar-paleta:hover {
   border-color: #ff6b6b;
   color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.08);
+}
+
+.btn-eliminar-paleta:active {
+  transform: scale(0.96);
+}
+
+/* =========================================================
+   SISTEMA DE NOTIFICACIONES (feedback de acciones)
+   ---------------------------------------------------------
+   - "Copiado": reestiliza el toast real que ya crea script.js
+     (#toast-copiado) para que comparta el mismo lenguaje visual.
+   - "Generar" / "Guardar": mensaje 100% CSS, anclado con
+     position:absolute directamente al botón correspondiente
+     (no al viewport ni al contenedor de paletas), así que su
+     posición es estable sin importar cuánto crezca la sección
+     de paletas guardadas.
+     El disparador es :active (no :focus): :active cambia de
+     falso a verdadero en CADA clic individual, sin importar si
+     el botón ya tenía el foco de un clic anterior, así que el
+     mensaje se reproduce siempre. El "quedarse visible unos
+     segundos" se logra con una transición de salida retrasada
+     (transition-delay), no con una animación ligada al estado
+     :active (que terminaría apenas se suelta el clic).
+   - "Eliminar": el botón .btn-eliminar-paleta SÍ se destruye y
+     recrea de forma síncrona dentro de su propio manejador de
+     clic (renderPaletasGuardadas() redibuja todo antes de que
+     el navegador pinte cualquier fotograma intermedio), así que
+     un mensaje anclado a él nunca llegaría a pintarse. No se
+     implementa un mensaje falso para no romper la restricción
+     de no tocar HTML/JS ni entregar algo que no funciona.
+   ========================================================= */
+
+/* Toast real (creado por script.js) — mismo lenguaje visual que el resto */
+#toast-copiado {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+/* Mensaje CSS-only: mismo lenguaje visual que #toast-copiado
+   (mismo fondo, borde, radio, tipografía, sombra), pero anclado
+   al propio botón en vez de al viewport */
+#btn-generar::after,
+#btn-guardar::after {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background-color: var(--card-bg);
+  color: #fff;
+  border: 2px solid var(--cyan-strong);
+  border-radius: var(--radius-pill);
+  padding: 10px 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none; /* nunca bloquea la interfaz */
+  z-index: 30;
+  /* Salida: se mantiene visible ~2.1s y luego se desvanece en 0.35s */
+  transition: opacity 0.35s ease 2.1s, transform 0.35s ease 2.1s;
+}
+
+#btn-generar::after {
+  content: "Paleta generada con éxito";
+}
+
+#btn-guardar::after {
+  content: "Paleta guardada con éxito";
+}
+
+/* Entrada: instantánea, sin retraso, se dispara en CADA clic vía :active */
+#btn-generar:active::after,
+#btn-guardar:active::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.12s ease, transform 0.12s ease;
 }
 
 /* =========================================================
@@ -470,5 +553,3 @@ button {
     justify-content: space-between;
   }
 }
-
-
